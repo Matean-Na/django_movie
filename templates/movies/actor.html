@@ -1,0 +1,175 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %} {{ actor.name }} {% endblock %}
+{% load movie_tag %}
+{% block content %}
+<div class="hero hero3">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<!-- <h1> movie listing - list</h1>
+				<ul class="breadcumb">
+					<li class="active"><a href="#">Home</a></li>
+					<li> <span class="ion-ios-arrow-right"></span> movie listing</li>
+				</ul> -->
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- celebrity single section-->
+<div class="page-single movie-single cebleb-single">
+	<div class="container">
+		<div class="row ipad-width">
+			<div class="col-md-4 col-sm-12 col-xs-12">
+				<div class="mv-ceb">
+					<img src="{{ actor.image.url }}" alt="">
+				</div>
+			</div>
+			<div class="col-md-8 col-sm-12 col-xs-12">
+				<div class="movie-single-ct">
+					<h1 class="bd-hd">{{ actor.name }}</h1>
+					<p class="ceb-single">Актер</p>
+					<div class="social-link cebsingle-socail">
+						<a href="#"><i class="ion-social-facebook"></i></a>
+						<a href="#"><i class="ion-social-twitter"></i></a>
+						<a href="#"><i class="ion-social-googleplus"></i></a>
+						<a href="#"><i class="ion-social-linkedin"></i></a>
+					</div>
+					<div class="movie-tabs">
+						<div class="tabs">
+							<ul class="tab-links tabs-mv">
+								<li class="active"><a href="#overviewceb">Обзор</a></li>
+								<li><a href="#biography"> Биография</a></li>
+								<li><a href="#filmography">Фильмы</a></li>
+							</ul>
+						    <div class="tab-content">
+						        <div id="overviewceb" class="tab active">
+						            <div class="row">
+						            	<div class="col-md-8 col-sm-12 col-xs-12">
+						            		<p>{{ actor.description|truncatewords:25 }}</p>
+											<p class="time"><a href="#">Смотреть полную биографию <i class="ion-ios-arrow-right"></i></a></p>
+											<div class="title-hd-sm">
+												<h4>Фильмография</h4>
+												<a href="#" class="time">Полная фильмография<i class="ion-ios-arrow-right"></i></a>
+											</div>
+											<!-- movie cast -->
+											<div class="mvcast-item">
+												{% for movie in actor.film_actor.all %}
+												{% if forloop.counter >= 4 %}
+												{% else %}
+												<div class="cast-it">
+													<div class="cast-left cebleb-film">
+														<img src="{{ movie.poster.url }}" alt="">
+														<div>
+															<a href="#">{{ movie.title }}</a>
+															{% for actor in movie.actors.all %}
+															<p class="time">{{ actor.name }}</p>
+															{% endfor %}
+														</div>
+
+													</div>
+													<p>...  {{ movie.year }}</p>
+												</div>
+												{% endif %}
+												{% endfor %}
+											</div>
+						            	</div>
+						            	<div class="col-md-4 col-xs-12 col-sm-12">
+						            		<div class="sb-it">
+						            			<h6>Полное имя:  </h6>
+						            			<p><a href="{% url 'actor_detail' actor.name %}">{{ actor.name }}</a></p>
+						            		</div>
+						            		<div class="sb-it">
+						            			<h6>Возраст: </h6>
+						            			<p>{{ actor.age }}</p>
+						            		</div>
+						            		<div class="sb-it">
+						            			<h6>Keywords:</h6>
+						            			<p class="tags">
+						            				<span class="time"><a href="#">jackman</a></span>
+													<span class="time"><a href="#">wolverine</a></span>
+													<span class="time"><a href="#">logan</a></span>
+													<span class="time"><a href="#">blockbuster</a></span>
+													<span class="time"><a href="#">final battle</a></span>
+						            			</p>
+						            		</div>
+						            		<div class="ads">
+												<img src="images/uploads/ads1.png" alt="">
+											</div>
+						            	</div>
+						            </div>
+						        </div>
+						        <div id="biography" class="tab">
+						           <div class="row">
+						            	<div class="rv-hd">
+											<div>
+												<h3>Биография</h3>
+						       	 				<h2>{{ actor.name }}</h2>
+											</div>
+						            	</div>
+						            	<p>{{ actor.description }}</p>
+						            </div>
+						        </div>
+						        <div id="mediaceb" class="tab">
+						        	<div class="row">
+						        		<div class="rv-hd">
+						            		<div>
+						            			<h3>Биография</h3>
+					       	 					<h2>{{ actor.name }}</h2>
+						            		</div>
+						            	</div>
+						        	</div>
+					       	 	</div>
+					       	 	<div id="filmography" class="tab">
+						        	<div class="row">
+						            	<div class="rv-hd">
+						            		<div>
+						            			<h3>Биография</h3>
+					       	 					<h2>{{ actor.name }}</h2>
+						            		</div>
+
+						            	</div>
+						            	<div class="topbar-filter">
+											<p>Найдено <span>{% get_movies_count %} фильмов</span></p>
+											<label>Фильтры:</label>
+											<select>
+												<option value="popularity">Popularity Descending</option>
+												<option value="popularity">Popularity Ascending</option>
+												<option value="rating">Rating Descending</option>
+												<option value="rating">Rating Ascending</option>
+												<option value="date">Release date Descending</option>
+												<option value="date">Release date Ascending</option>
+											</select>
+										</div>
+										<!-- movie cast -->
+										<div class="mvcast-item">
+												{% for movie in actor.film_actor.all %}
+												<div class="cast-it">
+													<div class="cast-left cebleb-film">
+														<img src="{{ movie.poster.url }}" alt="">
+														<div>
+															<a href="#">{{ movie.title }}</a>
+															{% for actor in movie.actors.all %}
+															<p class="time">{{ actor.name }}</p>
+															{% endfor %}
+														</div>
+													</div>
+													<p>...  {{ movie.year }}</p>
+												</div>
+												{% endfor %}
+										</div>
+						            </div>
+					       	 	</div>
+						    </div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	</div>
+</div>
+<!-- celebrity single section-->
+{% endblock %}
+

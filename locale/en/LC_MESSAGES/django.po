@@ -1,0 +1,96 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-11-17 11:52+0600\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: .\templates\movies\movie_detail.html:28
+msgid "Смотреть трейлер"
+msgstr ""
+
+#: .\templates\movies\movie_detail.html:32
+msgid "Buy a ticket"
+msgstr ""
+
+#: .\templates\movies\movie_detail.html:43
+msgid "Add to Favorite"
+msgstr ""
+
+#: .\templates\movies\movie_detail.html:45
+msgid "поделиться"
+msgstr "to share"
+
+#: .\templates\movies\movie_detail.html:58
+msgid "отзывы"
+msgstr "reviews"
+
+#: .\templates\movies\movie_detail.html:62
+msgid "Оценить этот фильм:"
+msgstr "Rate this movie:"
+
+#: .\templates\movies\movie_detail.html:79
+msgid "Обзор"
+msgstr "Overview"
+
+#: .\templates\movies\movie_detail.html:80
+msgid "Отзывы"
+msgstr "Reviews"
+
+#: .\templates\movies\movie_detail.html:81
+msgid "Актеры и команда"
+msgstr "Actors and team"
+
+#: .\templates\movies\movie_detail.html:82
+#: .\templates\movies\movie_detail.html:91
+msgid "Изображения"
+msgstr "Images"
+
+#: .\templates\movies\movie_detail.html:83
+msgid "Похожие фильмы"
+msgstr "Similar films"
+
+#: .\templates\movies\movie_detail.html:92
+msgid "Все фото"
+msgstr "All photos"
+
+#: .\templates\movies\movie_detail.html:100
+msgid "В ролях"
+msgstr "Cast"
+
+#: .\templates\movies\movie_detail.html:101
+msgid "Смотреть всех актеров"
+msgstr "See all actors"
+
+#: .\templates\movies\movie_detail.html:117
+msgid "Режиссер:"
+msgstr "Director:"
+
+#: .\templates\movies\movie_detail.html:125
+msgid "Звезды:"
+msgstr "Stars:"
+
+#: .\templates\movies\movie_detail.html:133
+msgid "Жанры:"
+msgstr "Genres:"
+
+#: .\templates\movies\movie_detail.html:141
+msgid "Дата релиза"
+msgstr "date of release"
+
+#: .\templates\movies\movie_detail.html:145
+msgid "Бюджет:"
+msgstr "Budget:"

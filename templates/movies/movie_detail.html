@@ -1,0 +1,400 @@
+{% extends "base.html" %}
+{% load static recaptcha3 %}
+{% block title %} {{ movie.title }} {% endblock %}
+{% load movie_tag %}
+{% load static i18n %}
+{% block content %}
+<div class="hero mv-single-hero">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<!-- <h1> movie listing - list</h1>
+				<ul class="breadcumb">
+					<li class="active"><a href="#">Home</a></li>
+					<li> <span class="ion-ios-arrow-right"></span> movie listing</li>
+				</ul> -->
+			</div>
+		</div>
+	</div>
+</div>
+<div class="page-single movie-single movie_single">
+	<div class="container">
+		<div class="row ipad-width2">
+			<div class="col-md-4 col-sm-12 col-xs-12">
+				<div class="movie-img sticky-sb">
+					<img src="{{ movie.poster.url }}" alt="">
+					<div class="movie-btn">
+						<div class="btn-transform transform-vertical red">
+							<div><a href="#" class="item item-1 redbtn"> <i class="ion-play"></i>{% trans "Смотреть трейлер" %}</a></div>
+							<div><a href="https://www.youtube.com/embed/o-0hcF97wy0" class="item item-2 redbtn fancybox-media hvr-grow"><i class="ion-play"></i></a></div>
+						</div>
+						<div class="btn-transform transform-vertical">
+							<div><a href="#" class="item item-1 yellowbtn"> <i class="ion-card"></i>{% trans "Купить билет" %}</a></div>
+							<div><a href="#" class="item item-2 yellowbtn"><i class="ion-card"></i></a></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-8 col-sm-12 col-xs-12">
+				<div class="movie-single-ct main-content">
+					<h1 class="bd-hd">{{ movie.title }}<span>{{ movie.year }}</span></h1>
+					<h3>{{ movie.tagline }}</h3>
+					<div class="social-btn">
+						<a href="#" class="parent-btn"><i class="ion-heart"></i>{% trans "Добавить в любимое" %}</a>
+						<div class="hover-bnt">
+							<a href="#" class="parent-btn"><i class="ion-android-share-alt"></i>{% trans "поделиться" %}</a>
+							<div class="hvr-item">
+								<a href="#" class="hvr-grow"><i class="ion-social-facebook"></i></a>
+								<a href="#" class="hvr-grow"><i class="ion-social-twitter"></i></a>
+								<a href="#" class="hvr-grow"><i class="ion-social-googleplus"></i></a>
+								<a href="#" class="hvr-grow"><i class="ion-social-youtube"></i></a>
+							</div>
+						</div>
+					</div>
+					<div class="movie-rate">
+						<div class="rate">
+							<i class="ion-android-star"></i>
+							<p><span>3</span> /5<br>
+								<span class="rv">{% get_review_count %} {% trans "отзывы" %}</span>
+							</p>
+						</div>
+						<div class="rate-star">
+							<p> {% trans "Оценить этот фильм:" %}  </p>
+							<form action="{% url 'add_rating' %}" method="post" name="rating">
+                            {% csrf_token %}
+                            <input type="hidden" value="{{ movie.id }}" name="movie">
+                            <span class="rating">
+                                {% for k, v in star_form.fields.star.choices %}
+                                    <input id="rating{{ v }}" type="radio" name="star"
+                                           value="{{ k }}">
+                                    <label for="rating{{ v }}">{{ k }}</label>
+                                {% endfor %}
+                            </span>
+                        </form>
+						</div>
+					</div>
+					<div class="movie-tabs">
+						<div class="tabs">
+							<ul class="tab-links tabs-mv">
+								<li class="active"><a href="#overview">{% trans 'Обзор' %}</a></li>
+								<li><a href="#reviews"> {% trans 'Отзывы' %}</a></li>
+								<li><a href="#cast">  {% trans 'Актеры и команда' %} </a></li>
+								<li><a href="#media"> {% trans 'Изображения' %}</a></li>
+								<li><a href="#moviesrelated"> {% trans 'Похожие фильмы' %}</a></li>
+							</ul>
+						    <div class="tab-content">
+						        <div id="overview" class="tab active">
+						            <div class="row">
+						            	<div class="col-md-8 col-sm-12 col-xs-12">
+						            		<p>{{ movie.description|safe }}</p>
+						            		<div class="title-hd-sm">
+												<h4>{% trans 'Изображения' %}</h4>
+												<a href="#" class="time">{% trans 'Все фото' %} <i class="ion-ios-arrow-right"></i></a>
+											</div>
+											<div class="mvsingle-item ov-item">
+												{% for image in movie.movieshots_set.all %}
+												<a class="img-lightbox"  data-fancybox-group="gallery" href="{{ image.image.url }}" ><img src="{{ image.image.url }}" alt="{{ image.description }}"></a>
+												{% endfor %}
+											</div>
+											<div class="title-hd-sm">
+												<h4>{% trans 'В ролях' %}</h4>
+												<a href="#" class="time">{% trans 'Смотреть всех актеров' %}  <i class="ion-ios-arrow-right"></i></a>
+											</div>
+											<!-- movie cast -->
+											<div class="mvcast-item">
+												{% for actor in movie.actors.all %}
+												<div class="cast-it">
+													<div class="cast-left">
+														<img src="{{ actor.image.url }}" alt="" width="70" height="70">
+														<a href="#">{{ actor.name }}</a>
+													</div>
+												</div>
+												{% endfor %}
+											</div>
+						            	</div>
+						            	<div class="col-md-4 col-xs-12 col-sm-12">
+						            		<div class="sb-it">
+						            			<h6>{% trans 'Режиссер:' %} </h6>
+						            			<p>
+													{% for director in movie.directors.all %}
+													<a href="#">{{ director.name }}</a>
+													{% endfor %}
+												</p>
+						            		</div>
+						            		<div class="sb-it">
+						            			<h6>{% trans 'Звезды:' %} </h6>
+						            			<p>
+													{% for actor in movie.actors.all %}
+													<a href="#">{{ actor.name }}</a>
+													{% endfor %}
+												</p>
+						            		</div>
+						            		<div class="sb-it">
+						            			<h6>{% trans 'Жанры:' %}</h6>
+						            			<p>
+													{% for genre in movie.genres.all %}
+													<a href="#">{{ genre.name }}</a>
+													{% endfor %}
+												</p>
+						            		</div>
+						            		<div class="sb-it">
+						            			<h6>{% trans 'Дата релиза' %}</h6>
+						            			<p>{{ movie.world_premiere }} ({{ movie.country }})</p>
+						            		</div>
+						            		<div class="sb-it">
+						            			<h6>{% trans 'Бюджет:' %}</h6>
+						            			<p>{{ movie.budget }}$</p>
+						            		</div>
+											<div class="sb-it">
+						            			<h6>Сборы в США:</h6>
+						            			<p>{{ movie.fees_in_usa }}$</p>
+						            		</div>
+						            		<div class="sb-it">
+						            			<h6>Сборы в мире:</h6>
+						            			<p>{{ movie.fees_in_world }}$</p>
+						            		</div>
+						            		<div class="ads">
+												<img src="images/uploads/ads1.png" alt="">
+											</div>
+						            	</div>
+						            </div>
+						        </div>
+						        <div id="reviews" class="tab review">
+						           <div class="row">
+				<div class="form-style-1 user-pro" action="#">
+					<form action="{% url 'add_review' movie.id %}" method="post" class="password">
+						{% csrf_token %}
+						<h4>Оставить отзыв</h4>
+						<div class="row">
+							<div class="col-md-6 form-it">
+								<label>email</label>
+								{{ form.email }}
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-6 form-it">
+								<label>имя</label>
+								{{ form.name }}
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-6 form-it">
+								<label>текст</label>
+								{{ form.text }}
+							</div>
+							{{ form.captcha }}
+						</div>
+						<div class="row">
+							<div class="col-md-2">
+								<input class="submit" type="submit" value="оставить">
+							</div>
+						</div>
+					</form>
+				</div>
+						            	<div class="topbar-filter">
+											<p>Найдено <span>{% get_review_count %} отзыва</span> в итоге</p>
+											<label>Filter by:</label>
+											<select>
+												<option value="popularity">Popularity Descending</option>
+												<option value="popularity">Popularity Ascending</option>
+												<option value="rating">Rating Descending</option>
+												<option value="rating">Rating Ascending</option>
+												<option value="date">Release date Descending</option>
+												<option value="date">Release date Ascending</option>
+											</select>
+										</div>
+									   {% for review in movie.reviews_set.all %}
+										<div class="mv-user-review-item">
+											<div class="user-infor">
+												<img src="images/uploads/userava1.jpg" alt="">
+												<div>
+													<h3>{{ review.name }}</h3>
+													<div class="no-star">
+														<i class="ion-android-star"></i>
+														<i class="ion-android-star"></i>
+														<i class="ion-android-star"></i>
+														<i class="ion-android-star"></i>
+														<i class="ion-android-star"></i>
+														<i class="ion-android-star"></i>
+														<i class="ion-android-star"></i>
+														<i class="ion-android-star"></i>
+														<i class="ion-android-star"></i>
+														<i class="ion-android-star last"></i>
+													</div>
+													<p class="time">
+														{{ review.email }}
+													</p>
+												</div>
+											</div>
+											<p>{{ review.text }}</p>
+										</div>
+									   {% endfor %}
+										<div class="topbar-filter">
+											<label>Reviews per page:</label>
+											<select>
+												<option value="range">5 Reviews</option>
+												<option value="saab">10 Reviews</option>
+											</select>
+											<div class="pagination2">
+												<span>Page 1 of 6:</span>
+												<a class="active" href="#">1</a>
+												<a href="#">2</a>
+												<a href="#">3</a>
+												<a href="#">4</a>
+												<a href="#">5</a>
+												<a href="#">6</a>
+												<a href="#"><i class="ion-arrow-right-b"></i></a>
+											</div>
+										</div>
+						            </div>
+						        </div>
+						        <div id="cast" class="tab">
+						        	<div class="row">
+						            	<h3>Актеры и др.</h3>
+										<!-- //== -->
+					       	 			<div class="title-hd-sm">
+											<h4>Режиссеры</h4>
+										</div>
+
+										<div class="mvcast-item">
+											<div class="cast-it">
+												{% for director in movie.directors.all %}
+												<div class="cast-left">
+													<h4>РЖ</h4>
+													<a href="{% url 'actor_detail' director.name %}">{{ director.name }}</a>
+												</div>
+												<p>...  Режиссер</p>
+												{% endfor %}
+											</div>
+										</div>
+
+										<div class="title-hd-sm">
+											<h4>Актеры</h4>
+										</div>
+										<div class="mvcast-item">
+											<div class="cast-it">
+												{% for actor in movie.actors.all %}
+												<div class="cast-left">
+													<img src="{{ actor.image.url }}" alt="">
+													<a href="{% url 'actor_detail' actor.name %}">{{ actor.name }}</a>
+												</div>
+												<p>... {{ actor.name }}</p>
+												{% endfor %}
+											</div>
+
+										</div>
+						            </div>
+					       	 	</div>
+					       	 	<div id="media" class="tab">
+						        	<div class="row">
+						        		<div class="rv-hd">
+						            		<div>
+						            			<h3>Изображения</h3>
+						            		</div>
+						            	</div>
+										<div class="title-hd-sm">
+											<h4>Фотографии <span> (21)</span></h4>
+										</div>
+										<div class="mvsingle-item">
+												{% for image in movie.movieshots_set.all %}
+											<a class="img-lightbox"  data-fancybox-group="gallery" href="{{ image.image.url }}" ><img src="{{ image.image.url }}" alt=""></a>
+												{% endfor %}
+										</div>
+						        	</div>
+					       	 	</div>
+					       	 	<div id="moviesrelated" class="tab">
+					       	 		<div class="row">
+					       	 			<h3>Related Movies To</h3>
+					       	 			<h2>Skyfall: Quantum of Spectre</h2>
+					       	 			<div class="topbar-filter">
+											<p>Found <span>12 movies</span> in total</p>
+											<label>Sort by:</label>
+											<select>
+												<option value="popularity">Popularity Descending</option>
+												<option value="popularity">Popularity Ascending</option>
+												<option value="rating">Rating Descending</option>
+												<option value="rating">Rating Ascending</option>
+												<option value="date">Release date Descending</option>
+												<option value="date">Release date Ascending</option>
+											</select>
+										</div>
+										<div class="movie-item-style-2">
+											<img src="images/uploads/mv1.jpg" alt="">
+											<div class="mv-item-infor">
+												<h6><a href="#">oblivion <span>(2012)</span></a></h6>
+												<p class="rate"><i class="ion-android-star"></i><span>8.1</span> /10</p>
+												<p class="describe">Earth's mightiest heroes must come together and learn to fight as a team if they are to stop the mischievous Loki and his alien army from enslaving humanity...</p>
+												<p class="run-time"> Run Time: 2h21’    .     <span>MMPA: PG-13 </span>    .     <span>Release: 1 May 2015</span></p>
+												<p>Director: <a href="#">Joss Whedon</a></p>
+												<p>Звезды: <a href="#">Robert Downey Jr.,</a> <a href="#">Chris Evans,</a> <a href="#">  Chris Hemsworth</a></p>
+											</div>
+										</div>
+										<div class="movie-item-style-2">
+											<img src="images/uploads/mv2.jpg" alt="">
+											<div class="mv-item-infor">
+												<h6><a href="#">into the wild <span>(2014)</span></a></h6>
+												<p class="rate"><i class="ion-android-star"></i><span>7.8</span> /10</p>
+												<p class="describe">As Steve Rogers struggles to embrace his role in the modern world, he teams up with a fellow Avenger and S.H.I.E.L.D agent, Black Widow, to battle a new threat...</p>
+												<p class="run-time"> Run Time: 2h21’    .     <span>MMPA: PG-13 </span>    .     <span>Release: 1 May 2015</span></p>
+												<p>Director: <a href="#">Anthony Russo,</a><a href="#">Joe Russo</a></p>
+												<p>Stars: <a href="#">Chris Evans,</a> <a href="#">Samuel L. Jackson,</a> <a href="#">  Scarlett Johansson</a></p>
+											</div>
+										</div>
+										<div class="movie-item-style-2">
+											<img src="images/uploads/mv3.jpg" alt="">
+											<div class="mv-item-infor">
+												<h6><a href="#">blade runner  <span>(2015)</span></a></h6>
+												<p class="rate"><i class="ion-android-star"></i><span>7.3</span> /10</p>
+												<p class="describe">Armed with a super-suit with the astonishing ability to shrink in scale but increase in strength, cat burglar Scott Lang must embrace his inner hero and help...</p>
+												<p class="run-time"> Run Time: 2h21’    .     <span>MMPA: PG-13 </span>    .     <span>Release: 1 May 2015</span></p>
+												<p>Director: <a href="#">Peyton Reed</a></p>
+												<p>Stars: <a href="#">Paul Rudd,</a> <a href="#"> Michael Douglas</a></p>
+											</div>
+										</div>
+										<div class="movie-item-style-2">
+											<img src="images/uploads/mv4.jpg" alt="">
+											<div class="mv-item-infor">
+												<h6><a href="#">Mulholland pride<span> (2013)  </span></a></h6>
+												<p class="rate"><i class="ion-android-star"></i><span>7.2</span> /10</p>
+												<p class="describe">When Tony Stark's world is torn apart by a formidable terrorist called the Mandarin, he starts an odyssey of rebuilding and retribution.</p>
+												<p class="run-time"> Run Time: 2h21’    .     <span>MMPA: PG-13 </span>    .     <span>Release: 1 May 2015</span></p>
+												<p>Director: <a href="#">Shane Black</a></p>
+												<p>Stars: <a href="#">Robert Downey Jr., </a> <a href="#">  Guy Pearce,</a><a href="#">Don Cheadle</a></p>
+											</div>
+										</div>
+										<div class="movie-item-style-2">
+											<img src="images/uploads/mv5.jpg" alt="">
+											<div class="mv-item-infor">
+												<h6><a href="#">skyfall: evil of boss<span> (2013)  </span></a></h6>
+												<p class="rate"><i class="ion-android-star"></i><span>7.0</span> /10</p>
+												<p class="describe">When Tony Stark's world is torn apart by a formidable terrorist called the Mandarin, he starts an odyssey of rebuilding and retribution.</p>
+												<p class="run-time"> Run Time: 2h21’    .     <span>MMPA: PG-13 </span>    .     <span>Release: 1 May 2015</span></p>
+												<p>Director: <a href="#">Alan Taylor</a></p>
+												<p>Stars: <a href="#">Chris Hemsworth,  </a> <a href="#">  Natalie Portman,</a><a href="#">Tom Hiddleston</a></p>
+											</div>
+										</div>
+										<div class="topbar-filter">
+											<label>Movies per page:</label>
+											<select>
+												<option value="range">5 Movies</option>
+												<option value="saab">10 Movies</option>
+											</select>
+											<div class="pagination2">
+												<span>Page 1 of 2:</span>
+												<a class="active" href="#">1</a>
+												<a href="#">2</a>
+												<a href="#"><i class="ion-arrow-right-b"></i></a>
+											</div>
+										</div>
+					       	 		</div>
+					       	 	</div>
+						    </div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
+

@@ -1,0 +1,9 @@
+<div class="flex-child-ft item5">
+				<h4>Newsletter</h4>
+				<p>Subscribe to our newsletter system now <br> to get latest news from us.</p>
+				<form action="{% url 'contact' %}" method="post">
+                    {% csrf_token %}
+                    {{ contact_form }}
+				</form>
+				<a href="#" class="btn">Subscribe now <i class="ion-ios-arrow-forward"></i></a>
+			</div>

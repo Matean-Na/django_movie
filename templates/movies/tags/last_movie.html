@@ -1,0 +1,18 @@
+<div  class="slick-multiItemSlider">
+	{% for movie in last_movies %}
+	    		<div class="movie-item">
+	    			<div class="mv-img">
+	    				<a href="{{ movie.get_absolute_url }}"><img src="{{ movie.poster.url }}" alt="" width="285" height="437"></a>
+	    			</div>
+	    			<div class="title-in">
+	    				<div class="cate">
+							{% for genre in movie.genres.all %}
+	    					<span class="blue"><a href="#">{{ genre.name }}</a></span>
+							{% endfor %}
+	    				</div>
+	    				<h6><a href="{{ movie.get_absolute_url }}">{{ movie.title }}</a></h6>
+	    				<p><i class="ion-android-star"></i><span>7.4</span> /10</p>
+	    			</div>
+	    		</div>
+	{% endfor %}
+</div>

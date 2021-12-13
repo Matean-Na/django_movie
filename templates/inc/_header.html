@@ -1,0 +1,95 @@
+{% load movie_tag %}
+{% load i18n movie_tag %}
+<!-- BEGIN | Header -->
+<header class="ht-header">
+	<div class="container">
+		<nav class="navbar navbar-default navbar-custom">
+				<!-- Brand and toggle get grouped for better mobile display -->
+				<div class="navbar-header logo">
+				    <div class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+					    <span class="sr-only">Toggle navigation</span>
+					    <div id="nav-icon1">
+							<span></span>
+							<span></span>
+							<span></span>
+						</div>
+				    </div>
+				    <a href="/"><img class="logo" src="images/logo1.png" alt="" width="119" height="58"></a>
+			    </div>
+				<!-- Collect the nav links, forms, and other content for toggling -->
+				<div class="collapse navbar-collapse flex-parent" id="bs-example-navbar-collapse-1">
+					<ul class="nav navbar-nav flex-child-menu menu-left">
+						<li class="hidden">
+							<a href="#page-top"></a>
+						</li>
+						<li class="dropdown first">
+							 <a class="btn btn-default dropdown-toggle lv1" data-toggle="dropdown">
+								<a href="/" class="home">Главная</a>
+							</a>
+						</li>
+						<li class="dropdown first">
+							<a class="btn btn-default dropdown-toggle lv1" data-toggle="dropdown" data-hover="dropdown">
+							<a href="/list" class="movie"> Фильмы</a><i class="fa fa-angle-down" aria-hidden="true"></i>
+							</a>
+							<ul class="dropdown-menu level1">
+								{% get_categories as categories %}
+								{% for category in categories %}
+								<li><a href="{{ category.get_absolute_url }}">{{ category.name }}</a></li>
+								{% endfor %}
+							</ul>
+						</li>
+						<li class="dropdown first">
+							<a class="btn btn-default lv1">
+							<a href="/celeb" class="celebr">знаменитости</a>
+							</a>
+						</li>
+						<li class="dropdown first">
+							<a class="btn btn-default dropdown-toggle lv1" data-toggle="dropdown" data-hover="dropdown">
+							новости
+							</a>
+						</li>
+						<li class="dropdown first">
+							<form action="{% url 'set_language'%}" method="post">{% csrf_token %}
+								<input name="next" type="hidden" value="{{ redirect_to }}">
+								<select name="language">
+									{% get_current_language as LANGUAGE_CODE %}
+									{% get_available_languages as LANGUAGES %}
+									{% get_language_info_list for LANGUAGES as languages %}
+									{% for language in languages %}
+										<option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %}selected{% endif %}>
+											{{ language.name_local }} ({{ language.code }})
+										</option>
+									{% endfor %}
+								</select>
+								<input type="submit" value="Go">
+							</form>
+						</li>
+					</ul>
+					<ul class="nav navbar-nav flex-child-menu menu-right">
+
+						{% if user.is_authenticated %}
+						<li><a href="{% url 'account_logout' %}">Выход</a></li>
+						{% else %}
+						<li><a href="{% url 'account_login' %}">Вход</a></li>
+						<li><a href="{% url 'account_signup' %}">Регистрация</a></li>
+						{% endif %}
+						<li class="loginLink"><a href="#">LOG In</a></li>
+						<li class="btn signupLink"><a href="#">sign up</a></li>
+					</ul>
+				</div>
+			<!-- /.navbar-collapse -->
+	    </nav>
+
+<!--	     top search form -->
+		<form action="{% url 'search' %}" method="get">
+	    <div class="top-search">
+	    	<select>
+				<option value="united">TV show</option>
+				<option value="saab">Others</option>
+			</select>
+			<input type="search" placeholder="поиск..." name="q">
+	    </div>
+		</form>
+	</div>
+</header>
+<!-- END | Header -->
